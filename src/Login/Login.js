@@ -44,11 +44,6 @@ class Login extends React.Component {
     }
 
     render() {
-        if (this.token !== null) {
-            return <div className="loginPage">
-                You are logged in
-            </div>
-        }
         return (
             <div className="loginPage">
                 <input type="text" placeholder="Username" value={this.state.username} onChange={this.fieldChange} id="username" />
