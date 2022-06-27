@@ -1,12 +1,11 @@
 import './Login.css';
-import React from 'react';
+import React, { useContext } from 'react';
+import tokenContext from '../tokenContext';
 
 
 class Login extends React.Component {
     constructor(props) {
         super(props);
-        this.token = props.token
-        this.setToken = props.setToken
         this.state = {
             username: '',
             password: ''
@@ -40,11 +39,13 @@ class Login extends React.Component {
 
     processAuth(data) {
         // TODO: Update global token state/context variable and set localstorage
-        this.setToken(data.token)
+        const { setToken } = useContext(tokenContext)
+        setToken(data.token)
     }
 
     render() {
-        if (this.token !== null) {
+        const { token } = useContext(tokenContext)
+        if (token !== null) {
             return <div className="loginPage">
                 You are logged in
             </div>
