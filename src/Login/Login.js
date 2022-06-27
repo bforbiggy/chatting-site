@@ -37,11 +37,11 @@ class Login extends React.Component {
     }
 
     processAuth(data) {
+        // TODO: Update global token state/context variable and set localstorage
         typeof (data.token) == 'string' ? localStorage.setItem("token", data.token) : console.log("token not found");
     }
 
     render() {
-        const isLoggedIn = localStorage.getItem("token")
         return (
             <div className="loginPage">
                 <input type="text" placeholder="Username" value={this.state.username} onChange={this.fieldChange} id="username" />
