@@ -33,14 +33,15 @@ class Login extends React.Component {
             body: JSON.stringify(this.state)
         };
 
-        fetch('http://162.84.178.38:3001/auth', requestOptions)
+        fetch('http://localhost:3001/auth', requestOptions)
             .then(response => response.json())
             .then((data) => { this.processAuth(data) })
     }
 
     processAuth(data) {
-        // TODO: Update global token state/context variable and set localstorage
+        // TODO: Check response for errors
         this.setToken(data.token)
+        localStorage.setItem("token", data.token)
     }
 
     render() {
