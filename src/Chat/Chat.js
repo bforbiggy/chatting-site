@@ -10,10 +10,10 @@ class Chat extends React.Component {
 	}
 
 	render() {
-		return (<div>
+		return (<>
 			<p>lol chat should be here</p>
 			<p>btw this is ur token:{this.state.token}</p>
-		</div>
+		</>
 		);
 	}
 }
