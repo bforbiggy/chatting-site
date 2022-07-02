@@ -14,6 +14,7 @@ class Chat extends React.Component {
 	render() {
 		return (<>
 			<p>lol chat should be here</p>
+			<p>im goofy</p>
 			<p>btw this is ur token:{this.state.token}</p>
 		</>
 		);
