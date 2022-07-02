@@ -1,6 +1,7 @@
-import logo from './dagojo.webp';
 import './App.css';
-import Login from '../Login/Login'
+import logo from './dagojo.webp';
+import Authentication from '../Authentication/Authentication'
+import Chat from '../Chat/Chat';
 import React from 'react';
 
 class App extends React.Component {
@@ -13,9 +14,6 @@ class App extends React.Component {
   }
 
   setToken(newToken) {
-    if (newToken)
-      console.log("updated token", newToken)
-    localStorage.setItem("token", newToken)
     this.setState({
       token: newToken
     })
@@ -25,13 +23,11 @@ class App extends React.Component {
     return (
       <div className="Top 10 reacts">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          {(this.state.token &&
-            <div className="loginPage">
-              commit test
-              You are logged in {this.state.token}
-            </div>)
-            || (<Login token={this.state.token} setToken={this.setToken} />)}
+          <img src={logo} className="App-logo" alt="logo" /><br /><br /><br />
+          {this.state.token ?
+            <Chat token={this.state.token} /> :
+            <Authentication token={this.state.token} setToken={this.setToken} />
+          }
         </header>
       </div>
     );
