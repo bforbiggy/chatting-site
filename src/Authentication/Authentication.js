@@ -52,8 +52,14 @@ class Authentication extends React.Component {
     }
 
     processResponse(data) {
-        localStorage.setItem("token", data.token)
-        this.setToken(data.token)
+        if (!data.token) {
+            // TODO: check invalid token
+            console.log("check invalid tokens");
+        } else {
+            localStorage.setItem("token", data.token)
+            this.setToken(data.token)
+
+        }
     }
 
     render() {
