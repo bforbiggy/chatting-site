@@ -13,9 +13,9 @@ class Authentication extends React.Component {
             password: '',
             loggingIn: true
         };
-        this.sendPost = this.sendPost.bind(this)
+        this.sendPost = this.onSubmit.bind(this)
         this.fieldChange = this.fieldChange.bind(this)
-        this.processAuth = this.processResponse.bind(this)
+        this.processResponse = this.processResponse.bind(this)
         this.toggleLogin = this.toggleLogin.bind(this)
     }
 
@@ -31,7 +31,7 @@ class Authentication extends React.Component {
             this.setState({ password: e.target.value });
     }
 
-    sendPost() {
+    onSubmit() {
         const hashedBitArr = sjcl.hash.sha256.hash(this.state.password)
         const hashedPass = sjcl.codec.hex.fromBits(hashedBitArr)
         var requestParams = {
@@ -45,28 +45,30 @@ class Authentication extends React.Component {
             })
         }
 
-        var path = this.state.loggingIn ? 'http://localhost:3001/auth' : 'http://localhost:3001/register';
+        var path = this.state.loggingIn ? 'http://localhost:3001/login' : 'http://localhost:3001/register';
         fetch(path, requestParams)
             .then(response => response.json())
             .then((data) => { this.processResponse(data) })
     }
 
     processResponse(data) {
-        if (!data.token) {
-            if (data.status === 500) {
-                this.setState({
-                    message: "Internal server error"
-                })
-            }
-            else if (data.status === 200) {
-                this.setState({
-                    message: this.state.loggingIn ? "Invalid Andy He" : "Account already exists"
-                })
-            }
-        } else {
+        // Token received, set as user token
+        if (data.token) {
             localStorage.setItem("token", data.token)
             this.setToken(data.token)
-
+        }
+        // No token received
+        else {
+            if (data.status === 200) {
+                this.setState({
+                    message: this.state.loggingIn ? "Invalid credentials." : "Account already exists."
+                })
+            }
+            else if (data.status === 500) {
+                this.setState({
+                    message: "Internal server error."
+                })
+            }
         }
     }
 
@@ -74,11 +76,11 @@ class Authentication extends React.Component {
         // Determine whether to render login/register buttons
         let authDiv = this.state.loggingIn ?
             <>
-                <button onClick={this.sendPost}>Login</button><br />
+                <button onClick={this.onSubmit}>Login</button><br />
                 <button onClick={this.toggleLogin} className='fakeLink'>Don't have an account?</button>
             </> :
             <>
-                <button onClick={this.sendPost}>Register</button><br />
+                <button onClick={this.onSubmit}>Register</button><br />
                 <button onClick={this.toggleLogin} className='fakeLink'>Meant to login instead?</button>
             </>;
 
