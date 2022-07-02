@@ -4,6 +4,8 @@ import React from 'react';
 class Chat extends React.Component {
 	constructor(props) {
 		super(props);
+		this.setToken = props.setToken;
+
 		this.state = {
 			token: localStorage.getItem("token")
 		};

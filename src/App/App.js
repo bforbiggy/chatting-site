@@ -14,8 +14,6 @@ class App extends React.Component {
   }
 
   setToken(newToken) {
-    if (newToken)
-      console.log("updated token", newToken)
     this.setState({
       token: newToken
     })
@@ -27,8 +25,8 @@ class App extends React.Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" /><br /><br /><br />
           {this.state.token ?
-            <Chat /> :
-            <Authentication />
+            <Chat token={this.state.token} /> :
+            <Authentication token={this.state.token} setToken={this.setToken} />
           }
         </header>
       </div>

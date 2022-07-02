@@ -2,18 +2,12 @@ import './Authentication.css';
 import React from 'react';
 const sjcl = require('sjcl')
 
-const defaultParams = {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    }
-};
-
 class Authentication extends React.Component {
     constructor(props) {
         super(props);
         this.token = props.token
         this.setToken = props.setToken
+
         this.state = {
             username: '',
             password: '',
@@ -38,15 +32,21 @@ class Authentication extends React.Component {
     }
 
     sendPost() {
-        const body = {
-            username: this.state.username,
-            password: this.state.password
+        const hashedBitArr = sjcl.hash.sha256.hash(this.state.password)
+        const hashedPass = sjcl.codec.hex.fromBits(hashedBitArr)
+        var requestParams = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: this.state.username,
+                password: hashedPass
+            })
         }
-        const hashedBitArr = sjcl.hash.sha256.hash(body.password)
-        body.password = sjcl.codec.hex.fromBits(hashedBitArr)
 
         var path = this.state.loggingIn ? 'http://localhost:3001/auth' : 'http://localhost:3001/register';
-        fetch(path, { ...defaultParams, ...body })
+        fetch(path, requestParams)
             .then(response => response.json())
             .then((data) => { this.processResponse(data) })
     }
