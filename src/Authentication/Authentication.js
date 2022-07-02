@@ -20,7 +20,7 @@ class Authentication extends React.Component {
     }
 
     toggleLogin() {
-        this.setState({ loggingIn: !this.state.loggingIn })
+        this.setParentState({ loggingIn: !this.state.loggingIn })
     }
 
     onChange(e) {
