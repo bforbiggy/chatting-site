@@ -53,8 +53,16 @@ class Authentication extends React.Component {
 
     processResponse(data) {
         if (!data.token) {
-            // TODO: check invalid token
-            console.log("check invalid tokens");
+            if (data.status === 500) {
+                this.setState({
+                    message: "Internal server error"
+                })
+            }
+            else if (data.status === 200) {
+                this.setState({
+                    message: this.state.loggingIn ? "Invalid Andy He" : "Account already exists"
+                })
+            }
         } else {
             localStorage.setItem("token", data.token)
             this.setToken(data.token)
@@ -78,6 +86,7 @@ class Authentication extends React.Component {
         // Main html
         return (
             <>
+                {this.state.message}
                 <input type="text" placeholder="Username" value={this.state.username} onChange={this.fieldChange} id="username" />
                 <input type="text" placeholder="Password" value={this.state.password} onChange={this.fieldChange} id="password" />
                 {authDiv}

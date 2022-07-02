@@ -23,7 +23,7 @@ class App extends React.Component {
     return (
       <div className="Top 10 reacts">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" /><br /><br /><br />
+          <img src={logo} className="App-logo" alt="logo" />
           {this.state.token ?
             <Chat token={this.state.token} /> :
             <Authentication token={this.state.token} setToken={this.setToken} />
