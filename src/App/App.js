@@ -10,13 +10,6 @@ class App extends React.Component {
     this.state = {
       token: localStorage.getItem("token")
     }
-    this.setToken = this.setToken.bind(this)
-  }
-
-  setToken(newToken) {
-    this.setState({
-      token: newToken
-    })
   }
 
   render() {
@@ -26,7 +19,7 @@ class App extends React.Component {
           <img src={logo} className="App-logo" alt="logo" />
           {this.state.token ?
             <Chat token={this.state.token} /> :
-            <Authentication token={this.state.token} setToken={this.setToken} />
+            <Authentication token={this.state.token} setParentState={this.setState} />
           }
         </header>
       </div>

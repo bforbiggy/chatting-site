@@ -6,15 +6,15 @@ class Authentication extends React.Component {
     constructor(props) {
         super(props);
         this.token = props.token
-        this.setToken = props.setToken
+        this.setParentState = props.setParentState
 
         this.state = {
             username: '',
             password: '',
             loggingIn: true
         };
-        this.sendPost = this.onSubmit.bind(this)
-        this.fieldChange = this.fieldChange.bind(this)
+        this.onSubmit = this.onSubmit.bind(this)
+        this.onChange = this.onChange.bind(this)
         this.processResponse = this.processResponse.bind(this)
         this.toggleLogin = this.toggleLogin.bind(this)
     }
@@ -23,7 +23,7 @@ class Authentication extends React.Component {
         this.setState({ loggingIn: !this.state.loggingIn })
     }
 
-    fieldChange(e) {
+    onChange(e) {
         var callerId = e.target.id;
         if (callerId === "username")
             this.setState({ username: e.target.value });
@@ -55,7 +55,7 @@ class Authentication extends React.Component {
         // Token received, set as user token
         if (data.token) {
             localStorage.setItem("token", data.token)
-            this.setToken(data.token)
+            this.setParentState({ token: data.token })
         }
         // No token received
         else {
@@ -89,8 +89,8 @@ class Authentication extends React.Component {
         return (
             <>
                 {this.state.message}
-                <input type="text" placeholder="Username" value={this.state.username} onChange={this.fieldChange} id="username" />
-                <input type="text" placeholder="Password" value={this.state.password} onChange={this.fieldChange} id="password" />
+                <input type="text" placeholder="Username" value={this.state.username} onChange={this.onChange} id="username" />
+                <input type="text" placeholder="Password" value={this.state.password} onChange={this.onChange} id="password" />
                 {authDiv}
             </>
         );
