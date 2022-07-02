@@ -28,6 +28,7 @@ class App extends React.Component {
           <img src={logo} className="App-logo" alt="logo" />
           {(this.state.token &&
             <div className="loginPage">
+              commit test
               You are logged in {this.state.token}
             </div>)
             || (<Login token={this.state.token} setToken={this.setToken} />)}
