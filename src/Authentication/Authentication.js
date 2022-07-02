@@ -1,5 +1,13 @@
 import './Authentication.css';
 import React from 'react';
+const sjcl = require('sjcl')
+
+const defaultParams = {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    }
+};
 
 class Authentication extends React.Component {
     constructor(props) {
@@ -30,16 +38,15 @@ class Authentication extends React.Component {
     }
 
     sendPost() {
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(this.state)
-        };
+        const body = {
+            username: this.state.username,
+            password: this.state.password
+        }
+        const hashedBitArr = sjcl.hash.sha256.hash(body.password)
+        body.password = sjcl.codec.hex.fromBits(hashedBitArr)
 
         var path = this.state.loggingIn ? 'http://localhost:3001/auth' : 'http://localhost:3001/register';
-        fetch(path, requestOptions)
+        fetch(path, { ...defaultParams, ...body })
             .then(response => response.json())
             .then((data) => { this.processResponse(data) })
     }
@@ -50,21 +57,19 @@ class Authentication extends React.Component {
     }
 
     render() {
-        let authDiv;
-        if (this.state.loggingIn) {
-            authDiv = <>
-                <button onClick={this.sendPost}>Login</button>
+        // Determine whether to render login/register buttons
+        let authDiv = this.state.loggingIn ?
+            <>
+                <button onClick={this.sendPost}>Login</button><br />
                 <button onClick={this.toggleLogin} className='fakeLink'>Don't have an account?</button>
-            </>;
-        }
-        else {
-            authDiv = <>
-                <button onClick={this.sendPost}>Register</button>
+            </> :
+            <>
+                <button onClick={this.sendPost}>Register</button><br />
                 <button onClick={this.toggleLogin} className='fakeLink'>Meant to login instead?</button>
             </>;
-        }
 
 
+        // Main html
         return (
             <>
                 <input type="text" placeholder="Username" value={this.state.username} onChange={this.fieldChange} id="username" />
