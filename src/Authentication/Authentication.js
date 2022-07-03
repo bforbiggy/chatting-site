@@ -45,7 +45,7 @@ class Authentication extends React.Component {
             })
         }
 
-        var path = this.state.loggingIn ? 'http://localhost:3001/login' : 'http://localhost:3001/register';
+        var path = this.state.loggingIn ? 'http://localhost:3001/auth/login' : 'http://localhost:3001/auth/register';
         fetch(path, requestParams)
             .then(response => response.json())
             .then((data) => { this.processResponse(data) })
